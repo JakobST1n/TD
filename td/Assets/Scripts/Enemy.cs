@@ -23,6 +23,10 @@ public class Enemy : MonoBehaviour {
 
 		float transformStep = speed * Time.deltaTime;
 		transform.position = Vector3.MoveTowards (transform.position, waypointPos, transformStep);
+
+		if (waypointNum == waypoints.Count - 1) {
+			Destroy (gameObject);
+		}
 	}
 
 	void updateWaypoint() {
