@@ -9,25 +9,27 @@ public class Enemy : MonoBehaviour {
 	public Transform pathWay;
 
 	List<Vector3> waypoints = new List<Vector3>();
-	Vector3 currentWaypointPosition;
-	int currentWaypoint = 0;
+	Vector3 waypointPos;
+	int waypointNum = -1;  // Using minus one so that first addition returns 0, first element in array
 
-	// Use this for initialization
 	void Start () {
 		foreach (Transform child in pathWay) {
 			waypoints.Add (child.position);
 		}
-		currentWaypointPosition = new Vector3(waypoints [currentWaypoint].x, 0.604f, waypoints[currentWaypoint].z);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (transform.position == currentWaypointPosition && currentWaypoint < waypoints.Count - 1) {
-			currentWaypoint += 1;
-			currentWaypointPosition = new Vector3(waypoints [currentWaypoint].x, 0.604f, waypoints[currentWaypoint].z);
-		}
 
-		transform.position = Vector3.MoveTowards (transform.position, currentWaypointPosition, speed * Time.deltaTime);
+	void Update () {
+		updateWaypoint ();
+
+		float transformStep = speed * Time.deltaTime;
+		transform.position = Vector3.MoveTowards (transform.position, waypointPos, transformStep);
+	}
+
+	void updateWaypoint() {
+		if ( (transform.position == waypointPos && waypointNum < waypoints.Count - 1) || waypointNum == -1) {
+			waypointNum++;
+			waypointPos = new Vector3 (waypoints [waypointNum].x, 0.604f, waypoints [waypointNum].z);
+		}
 	}
 		
 }
