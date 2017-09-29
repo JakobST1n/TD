@@ -7,10 +7,17 @@ public class EnemySpawner : MonoBehaviour {
 	public Enemy enemyPrefab;
 	public Transform pathWay;
 	public Transform gameWorld;
+	List<Vector3> waypoints = new List<Vector3>();
 
 	int wave;
 	int next = 1;
 	int n = 0;
+
+	void Awake() {
+		foreach (Transform child in pathWay) {
+			waypoints.Add (child.position);
+		}
+	}
 
 	void Update () {
 		n++;
@@ -20,8 +27,13 @@ public class EnemySpawner : MonoBehaviour {
 			next = (int)Random.Range (50, 400);
 
 			Enemy newEnemy = Instantiate (enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity, gameWorld);
-			newEnemy.GetComponent <Enemy> ().pathWay = pathWay;
-			newEnemy.GetComponent <Enemy> ().speed = Random.Range (0.3f, 1.2f);
+			Enemy script = newEnemy.GetComponent <Enemy> ();
+			Transform transform = newEnemy.GetComponent <Transform>();
+
+			script.waypoints = waypoints;
+			script.speed = Random.Range (0.3f, 1.2f);
+			transform.position = new Vector3 (0.93f, 0.483f, 0f);
 		}
+
 	}
 }
