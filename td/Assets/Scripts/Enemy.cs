@@ -12,20 +12,17 @@ public class Enemy : MonoBehaviour {
 	int waypointNum = -1;  // Using minus one so that first addition returns 0, first element in array
 
 	void Update () {
-		updateWaypoint ();
+		if ( (transform.position == waypointPos && waypointNum + 1 < waypoints.Count) || waypointNum == -1) {
+			waypointNum++;
+			waypointPos = new Vector3 (waypoints [waypointNum].x, 0.483f, waypoints [waypointNum].z);
+		}
 
 		float transformStep = speed * Time.deltaTime;
 		transform.position = Vector3.MoveTowards (transform.position, waypointPos, transformStep);
 
-		if (waypointNum == waypoints.Count - 1) {
+		// Selfdestruct if object reached the end
+		if (waypointNum + 1 >= waypoints.Count) {
 			Destroy (gameObject);
-		}
-	}
-
-	void updateWaypoint() {
-		if ( (transform.position == waypointPos && waypointNum < waypoints.Count - 1) || waypointNum == -1) {
-			waypointNum++;
-			waypointPos = new Vector3 (waypoints [waypointNum].x, 0.483f, waypoints [waypointNum].z);
 		}
 	}
 		

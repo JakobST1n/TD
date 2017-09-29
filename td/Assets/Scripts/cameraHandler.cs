@@ -36,9 +36,9 @@ public class cameraHandler : MonoBehaviour {
 		if (Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer) {
 			HandleTouch();
 		} else {
-			//HandleMouse();
+			HandleMouse();
 		}
-		HandleTouch ();
+		//HandleTouch ();
 	}
 
 	void HandleTouch() {

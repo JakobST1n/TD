@@ -7,9 +7,8 @@ public class EnemySpawner : MonoBehaviour {
 	public Enemy enemyPrefab;
 	public Transform pathWay;
 	public Transform gameWorld;
-	List<Vector3> waypoints = new List<Vector3>();
 
-	int wave;
+	List<Vector3> waypoints = new List<Vector3>();
 	int next = 1;
 	int n = 0;
 
