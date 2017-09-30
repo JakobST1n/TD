@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
+	/* This is a general class that contains an enemy, 
+	 * Currently it follows the pathway, and dies when reacing the end */
 
-	public float speed;
-	public float initialHp;
-	public List<Vector3> waypoints;
+	public float speed;  // Speed multiplier
+	public float initialHp;  // HealthPoints
+	public List<Vector3> waypoints;  // Pathway waypoints, should be set by the spawner
 
-	Vector3 waypointPos;
+	Vector3 waypointPos;  // Current waypoint position
 	int waypointNum = -1;  // Using minus one so that first addition returns 0, first element in array
 
 	void Update () {

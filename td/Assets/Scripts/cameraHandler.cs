@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class cameraHandler : MonoBehaviour {
+	// TODO Fiks panning, ser idiotisk ut nå så jeg har satt panSpeed til 0. (I editoren)
 
 	public float PanSpeed = 20f;
 	public float ZoomSpeedTouch = 0.1f;

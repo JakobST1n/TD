@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour {
+	/* This is a class that spawns an enemy with a random interval
+	 * it is not very good, but is what it needs to be for testing purposes */
+	// TODO Add wave system with increasing difficulty
 
 	public Enemy enemyPrefab;
 	public Transform pathWay;
