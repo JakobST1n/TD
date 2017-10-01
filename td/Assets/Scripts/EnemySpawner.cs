@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour {
 
 	public Enemy enemyPrefab;
 	public Transform pathWay;
-	public Transform gameWorld;
+	Transform parentObject;
 
 	List<Vector3> waypoints = new List<Vector3>();
 	int next = 1;
@@ -21,6 +21,10 @@ public class EnemySpawner : MonoBehaviour {
 		}
 	}
 
+	void Start() {
+		parentObject = transform.Find ("enemies").gameObject.GetComponent <Transform> ();
+	}
+
 	void Update () {
 		n++;
 
@@ -28,7 +32,7 @@ public class EnemySpawner : MonoBehaviour {
 			n = 0;
 			next = (int)Random.Range (50, 400);
 
-			Enemy newEnemy = Instantiate (enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity, gameWorld);
+			Enemy newEnemy = Instantiate (enemyPrefab, new Vector3(0, 0, 0), Quaternion.identity, parentObject);
 			Enemy script = newEnemy.GetComponent <Enemy> ();
 			Transform transform = newEnemy.GetComponent <Transform>();
 
