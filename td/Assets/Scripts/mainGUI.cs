@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class mainGUI : MonoBehaviour {
 	Button btnResumeGame;
 	Button btnExitGame;
 	Button btnSettings;
+	Button btnSettingsDiscard;
+	Button btnSettingsSave;
 
 	bool sidebarExpanded;
 	float[] sidebarStates = new float[2] {0f, -202.4f};  // The x position of the sidebar expanded or collapsed
@@ -33,12 +36,15 @@ public class mainGUI : MonoBehaviour {
 		btnResumeGame = pnlMenu.transform.Find ("resumeGame").gameObject.GetComponent <Button> ();
 		btnExitGame = pnlMenu.transform.Find ("exitGame").gameObject.GetComponent <Button> ();
 		btnSettings = pnlMenu.transform.Find ("settings").gameObject.GetComponent <Button> ();
+		btnSettingsDiscard = pnlSettings.transform.Find ("discardChanges").gameObject.GetComponent <Button> ();
+		btnSettingsSave = pnlSettings.transform.Find ("saveChanges").gameObject.GetComponent <Button> ();
 		if (btnToggleSidebar != null) { btnToggleSidebar.onClick.AddListener (toggleSidebarHandler); }
 		if (btnPauseGame != null) { btnPauseGame.onClick.AddListener (pauseGameHandler); }
 		if (btnResumeGame != null) { btnResumeGame.onClick.AddListener (btnResumeGameHandler); }
 		if (btnExitGame != null) { btnExitGame.onClick.AddListener (btnExitGameHandler); }
 		if (btnSettings != null) { btnSettings.onClick.AddListener (btnSettingsHandler); }
-
+		if (btnSettingsDiscard != null) { btnSettingsDiscard.onClick.AddListener (btnSettingsDiscardHandler); }
+		if (btnSettingsSave != null) { btnSettingsSave.onClick.AddListener (btnSettingsSaveHandler); }
 
 		/* Set up initial states */
 		updateSidebarPosandBtn ();
@@ -79,6 +85,24 @@ public class mainGUI : MonoBehaviour {
 		/* handler for btnSettings */
 		pnlMenu.SetActive (false);
 		pnlSettings.SetActive (true);
+
+		if (PlayerPrefs.HasKey ("developerMode")) {
+			pnlSettings.transform.Find ("developerEnabled").gameObject.GetComponent <Toggle> ().isOn = intToBool(PlayerPrefs.GetInt ("developerMode"));
+		}
+	}
+
+	void btnSettingsSaveHandler() {
+		/* handler for btnSaveSettings */
+		pnlMenu.SetActive (true);
+		pnlSettings.SetActive (false);
+
+		PlayerPrefs.SetInt ("developerMode", Convert.ToInt32(pnlSettings.transform.Find ("developerEnabled").gameObject.GetComponent <Toggle>().isOn));
+	}
+
+	void btnSettingsDiscardHandler() {
+		/* handler for btnSettingsDiscard */
+		pnlMenu.SetActive (true);
+		pnlSettings.SetActive (false);
 	}
 
 	void updateSidebarPosandBtn() {
@@ -89,6 +113,15 @@ public class mainGUI : MonoBehaviour {
 		} else {
 			pnlSidebarTransform.localPosition = new Vector3 (sidebarStates [0], 0f, 0f);
 			btnToggleSidebar.transform.GetComponent <RectTransform> ().localScale = new Vector3 (1, 1, 1);
+		}
+	}
+
+	bool intToBool(int input) {
+		/* Converts int to boolean */
+		if (input >= 1) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
