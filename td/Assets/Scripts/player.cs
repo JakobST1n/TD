@@ -43,6 +43,11 @@ public class Player : MonoBehaviour {
 		return _playerHealth;
 	}
 
+	public float HealthAsPercentage()
+	{
+		return InitialHealth / _playerHealth;
+	}
+
 	public void DecreaseHealth(int hp) {
 		_playerHealth -= hp;
 	}
