@@ -10,6 +10,8 @@ public class tower : MonoBehaviour {
 	public float turnSpeed;          // How fast the turret should rotate. Set in designer (tower prefab)
 	[Range(0, 10)]
 	public float towerRange;         // How large the range of the tower is. this is the diameter. Set in designer (tower prefab)
+	public GameObject projectilePrefab;
+	public Transform firePoint;
 	[Header("Materials")]
 	public Material materialDanger;  // The material used when tower can't be placed, set in the designer (tower prefab)
 	public Material materialSuccess; // The material used when the tower can be placed, or is selected, set in the designer (tower prefab)
@@ -83,12 +85,22 @@ public class tower : MonoBehaviour {
 
 		if (fireCountdown <= 0f) {
 			// FAIAAAAA
+			shoot();
 			fireCountdown = 1f / fireRate;
 		}
 
 		fireCountdown -= Time.deltaTime;
 
 
+	}
+
+	void shoot() {
+		GameObject projectileGo = (GameObject) Instantiate (projectilePrefab, firePoint.position, firePoint.rotation);
+		projectile Projectile = projectileGo.GetComponent <projectile>();
+		if (Projectile != null) {
+			Projectile.player = player;
+			Projectile.seek (target);
+		}
 	}
 
 	void updateTarget() {
@@ -107,7 +119,6 @@ public class tower : MonoBehaviour {
 		}
 
 		if (nearestEnemy != null && shortestDistance <= towerRange) {
-			Debug.Log ("Target aquired");
 			target = nearestEnemy.transform;
 		} else {
 			target = null;

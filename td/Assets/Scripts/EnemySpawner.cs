@@ -9,7 +9,10 @@ public class EnemySpawner : MonoBehaviour {
 
 	public Enemy enemyPrefab;
 	public Transform pathWay;
-	Transform parentObject;
+	[Header("Scripting vars")]
+	public player player;            // Reference to the player object, should be set when instantiating
+
+	private Transform parentObject;
 
 	List<Vector3> waypoints = new List<Vector3>();
 	int next = 1;
@@ -38,6 +41,7 @@ public class EnemySpawner : MonoBehaviour {
 
 			script.waypoints = waypoints;
 			script.speed = Random.Range (0.3f, 1.2f);
+			script.player = player;
 			transform.position = new Vector3 (0.93f, 0.483f, 0f);
 		}
 

@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class player : MonoBehaviour {
 
+	public int initialHealth;
     public int startingMoney;
 
-	GameObject[] towers;
-
-    int playerMoney;
-    int playerScore;
-
-	bool placingTower;
+	private GameObject[] towers;
+    private int playerMoney;
+    private int playerScore;
+	private int playerHealth;
 
     void Awake() {
         playerMoney = startingMoney;
+		playerHealth = initialHealth;
     }
 
 	#region stats
@@ -22,7 +22,7 @@ public class player : MonoBehaviour {
         return playerScore;
     }
 
-    public void score(int points) {
+    public void scoreAdd(int points) {
         playerScore += points;
     }
 
@@ -37,6 +37,14 @@ public class player : MonoBehaviour {
     public void moneySubtract(int sum) {
         playerMoney -= sum;
     }
+
+	public int health() {
+		return playerHealth;
+	}
+
+	public void decreaseHealth(int hp) {
+		playerHealth -= hp;
+	}
 	#endregion
 
 	public void spawnTower(GameObject towerType) {

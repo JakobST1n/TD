@@ -9,13 +9,16 @@ public class gameStats : MonoBehaviour {
     GameObject canvas;
     Text txtMoney;
     Text txtScore;
+	Text txtHp;
     int displayedScore;
     int displayedMoney;
+	int displayedHealth;
 
     void Start() {
 		canvas = transform.GetChild (0).gameObject;
 		txtMoney = canvas.transform.Find ("playerMoney").gameObject.GetComponent <Text>();
 		txtScore = canvas.transform.Find ("playerScore").gameObject.GetComponent <Text>();
+		txtHp = canvas.transform.Find ("playerHealth").gameObject.GetComponent <Text>();
     }
 
 	void Update () {
@@ -30,6 +33,11 @@ public class gameStats : MonoBehaviour {
 			updateScore (displayedScore);
 		}
 
+		if (Player.health () != displayedHealth) {
+			displayedHealth = Player.health ();
+			updateHealth (displayedHealth);
+		}
+
 	}
 
 	void updateScore(int newScore) {
@@ -38,6 +46,10 @@ public class gameStats : MonoBehaviour {
 
 	void updateMoney(int newMoney) {
 		txtMoney.text = ("Money: " + newMoney.ToString () + "$");
+	}
+
+	void updateHealth(int newHp) {
+		txtHp.text = ("HP: " + newHp.ToString ());
 	}
 
 }
