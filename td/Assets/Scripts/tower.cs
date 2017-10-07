@@ -1,69 +1,67 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class tower : MonoBehaviour {
+public class Tower : MonoBehaviour {
 
 	[Header("Attributes")]
-	public int towerPrice;           // The price of the tower, set this in the desiger (tower prefab)
-	public float fireRate;           // How long the turret should use to reload, Set in designer (tower prefab)
-	public float turnSpeed;          // How fast the turret should rotate. Set in designer (tower prefab)
+	public int TowerPrice;           // The price of the tower, set this in the desiger (tower prefab)
+	public float FireRate;           // How long the turret should use to reload, Set in designer (tower prefab)
+	public float TurnSpeed;          // How fast the turret should rotate. Set in designer (tower prefab)
 	[Range(0, 10)]
-	public float towerRange;         // How large the range of the tower is. this is the diameter. Set in designer (tower prefab)
-	public GameObject projectilePrefab;
-	public Transform firePoint;
+	public float TowerRange;         // How large the range of the tower is. this is the diameter. Set in designer (tower prefab)
+	public GameObject ProjectilePrefab;
+	public Transform FirePoint;
 	[Header("Materials")]
-	public Material materialDanger;  // The material used when tower can't be placed, set in the designer (tower prefab)
-	public Material materialSuccess; // The material used when the tower can be placed, or is selected, set in the designer (tower prefab)
+	public Material MaterialDanger;  // The material used when tower can't be placed, set in the designer (tower prefab)
+	public Material MaterialSuccess; // The material used when the tower can be placed, or is selected, set in the designer (tower prefab)
 	[Header("Scripting vars")]
-	public player player;            // Reference to the player object, should be set when instantiating
+	public Player Player;            // Reference to the player object, should be set when instantiating
 
-	private GameObject placementIndicator;        // The placement indicator
-	private Renderer placementIndicatorRenderer;  // The renderer of the placement indicator
-	private Plane groundPlane;                    // Plane used for raycasting when placing tower
-	private float groundYpoint = 0.525f;          // What Y-position the Tower should be placed on, this should be constant in every use-case.
-	private bool towerPlaced;                     // Bool used to descide what to do this frame
-	private bool colliding;                       // Set if the tower collides with any GameObject, used when placing, to see where it can be placed
+	private GameObject _placementIndicator;        // The placement indicator
+	private Renderer _placementIndicatorRenderer;  // The renderer of the placement indicator
+	private Plane _groundPlane;                    // Plane used for raycasting when placing tower
+	private float _groundYpoint = 0.525f;          // What Y-position the Tower should be placed on, this should be constant in every use-case.
+	private bool _towerPlaced;                     // Bool used to descide what to do this frame
+	private bool _colliding;                       // Set if the tower collides with any GameObject, used when placing, to see where it can be placed
 
-	private Transform target;
-	private float fireCountdown;
+	private Transform _target;
+	private float _fireCountdown;
 
 	void Start () {
-		placementIndicator = transform.GetChild (0).gameObject;
-		placementIndicatorRenderer = placementIndicator.GetComponent<Renderer> ();
-		placementIndicator.transform.localScale = new Vector3 (towerRange*7, 0.00000001f, towerRange*7); 
+		_placementIndicator = transform.GetChild (0).gameObject;
+		_placementIndicatorRenderer = _placementIndicator.GetComponent<Renderer> ();
+		_placementIndicator.transform.localScale = new Vector3 (TowerRange*7, 0.00000001f, TowerRange*7); 
 
-		groundPlane = new Plane (Vector3.up, new Vector3(0f, groundYpoint, 0f));
+		_groundPlane = new Plane (Vector3.up, new Vector3(0f, _groundYpoint, 0f));
 	}
 
 	void Update () {
 
 		#region placeTower
-		if (!towerPlaced) {
+		if (!_towerPlaced) {
 			if (Input.touchCount == 1 || Input.GetMouseButton (0)) {
 				
 				/* Activate indicator if not already */
-				if (!placementIndicator.activeSelf) { placementIndicator.SetActive (true); }
+				if (!_placementIndicator.activeSelf) { _placementIndicator.SetActive (true); }
 				/* Change indicator-color based on placement */
-				if (!colliding) { placementIndicatorRenderer.sharedMaterial = materialDanger; }
-				else { placementIndicatorRenderer.sharedMaterial = materialSuccess; }
+				if (!_colliding) { _placementIndicatorRenderer.sharedMaterial = MaterialDanger; }
+				else { _placementIndicatorRenderer.sharedMaterial = MaterialSuccess; }
 				/* Calculate new position */
 				Ray touchRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 				float rayDistance;
-				if (groundPlane.Raycast (touchRay, out rayDistance)) {
+				if (_groundPlane.Raycast (touchRay, out rayDistance)) {
 					transform.position = touchRay.GetPoint (rayDistance);
 				}
 
 			} else {
 				
 				/* User let go of the screen, decide if tower can be placed */
-				if (!colliding) { Destroy (gameObject); }  // Skal kollidere for å være på et godkjent område
+				if (!_colliding) { Destroy (gameObject); }  // Skal kollidere for å være på et godkjent område
 				else {
-					towerPlaced = true;
-					player.moneySubtract (towerPrice);
-					placementIndicator.SetActive (false);
-					placementIndicatorRenderer.sharedMaterial = materialSuccess;
-					InvokeRepeating ("updateTarget", 0f, 0.5f);  // This starts the 
+					_towerPlaced = true;
+					Player.MoneySubtract (TowerPrice);
+					_placementIndicator.SetActive (false);
+					_placementIndicatorRenderer.sharedMaterial = MaterialSuccess;
+					InvokeRepeating ("UpdateTarget", 0f, 0.5f);  // This starts the 
 					gameObject.GetComponent <BoxCollider>().enabled = false;
 				}
 
@@ -74,36 +72,36 @@ public class tower : MonoBehaviour {
 		#endregion
 
 		// Stop rest of update if no target is aquired
-		if (target == null) {
+		if (_target == null) {
 			return;
 		}
 		// Target lockon
-		Vector3 direction = target.position - transform.position;
+		Vector3 direction = _target.position - transform.position;
 		Quaternion lookRotation = Quaternion.LookRotation (direction);
-		Vector3 rotation = Quaternion.Lerp (transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+		Vector3 rotation = Quaternion.Lerp (transform.rotation, lookRotation, Time.deltaTime * TurnSpeed).eulerAngles;
 		transform.rotation = Quaternion.Euler (0f, rotation.y, 0f);
 
-		if (fireCountdown <= 0f) {
+		if (_fireCountdown <= 0f) {
 			// FAIAAAAA
-			shoot();
-			fireCountdown = 1f / fireRate;
+			Shoot();
+			_fireCountdown = 1f / FireRate;
 		}
 
-		fireCountdown -= Time.deltaTime;
+		_fireCountdown -= Time.deltaTime;
 
 
 	}
 
-	void shoot() {
-		GameObject projectileGo = (GameObject) Instantiate (projectilePrefab, firePoint.position, firePoint.rotation);
-		projectile Projectile = projectileGo.GetComponent <projectile>();
-		if (Projectile != null) {
-			Projectile.player = player;
-			Projectile.seek (target);
+	void Shoot() {
+		GameObject projectileGo = (GameObject) Instantiate (ProjectilePrefab, FirePoint.position, FirePoint.rotation);
+		Projectile projectile = projectileGo.GetComponent <Projectile>();
+		if (projectile != null) {
+			projectile.Player = Player;
+			projectile.Seek (_target);
 		}
 	}
 
-	void updateTarget() {
+	void UpdateTarget() {
 		/* Method that updates the currentTarget.
 		 * The target will be set to the nearest in range */
 		GameObject[] enemies = GameObject.FindGameObjectsWithTag ("enemy");
@@ -118,29 +116,29 @@ public class tower : MonoBehaviour {
 			}
 		}
 
-		if (nearestEnemy != null && shortestDistance <= towerRange) {
-			target = nearestEnemy.transform;
+		if (nearestEnemy != null && shortestDistance <= TowerRange) {
+			_target = nearestEnemy.transform;
 		} else {
-			target = null;
+			_target = null;
 		}
 	}
 
 	void OnTriggerEnter(Collider other) {
-		colliding = true;
+		_colliding = true;
 	}
 
 	void OnTriggerStay(Collider other) {
-		colliding = true;
+		_colliding = true;
 	}
 
 	void OnTriggerExit(Collider other) {
-		colliding = false;
+		_colliding = false;
 	}
 
 	void OnDrawGizmosSelected() {
 		/* Show gizmos in designer */
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere (transform.position, towerRange);
+		Gizmos.DrawWireSphere (transform.position, TowerRange);
 	}
 
 }

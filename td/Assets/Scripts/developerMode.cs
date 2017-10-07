@@ -3,49 +3,49 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class developerMode : MonoBehaviour {
+public class DeveloperMode : MonoBehaviour {
 
-	public string output = "";
-	public string stack = "";
-	public bool cheatsAllowed;
+	public string Output = "";
+	public string Stack = "";
+	public bool CheatsAllowed;
 
-	GameObject pnlCanvas;
-	GameObject pnlCheats;
-	Button btnToggleCheats;
-	Text lblConsoleLog;
+	GameObject _pnlCanvas;
+	GameObject _pnlCheats;
+	Button _btnToggleCheats;
+	Text _lblConsoleLog;
 
-	bool developerModeActive;
-	bool cheatMenuOpen;
+	bool _developerModeActive;
+	bool _cheatMenuOpen;
 
 	void Start () {
 		/* Panels */
-		pnlCanvas = this.gameObject.transform.GetChild (0).gameObject;
-		pnlCheats = pnlCanvas.transform.Find ("cheatMenu").gameObject;
+		_pnlCanvas = this.gameObject.transform.GetChild (0).gameObject;
+		_pnlCheats = _pnlCanvas.transform.Find ("cheatMenu").gameObject;
 		/* Buttons */
 		/* Button handlers */
 		/* Lablels */
-		lblConsoleLog = pnlCanvas.transform.Find ("consoleLog").gameObject.GetComponent <Text>();
+		_lblConsoleLog = _pnlCanvas.transform.Find ("consoleLog").gameObject.GetComponent <Text>();
 		/* Do setup */
-		lblConsoleLog.text = "";
+		_lblConsoleLog.text = "";
 
-		if (cheatsAllowed) {
-			btnToggleCheats = pnlCanvas.transform.Find ("toggleCheats").gameObject.GetComponent <Button> ();
-			if (btnToggleCheats != null) { btnToggleCheats.onClick.AddListener (btnToggleCheatsHandler); }
-			cheatMenuOpen = false;
+		if (CheatsAllowed) {
+			_btnToggleCheats = _pnlCanvas.transform.Find ("toggleCheats").gameObject.GetComponent <Button> ();
+			if (_btnToggleCheats != null) { _btnToggleCheats.onClick.AddListener (btnToggleCheatsHandler); }
+			_cheatMenuOpen = false;
 		} else {
-			pnlCanvas.transform.Find ("toggleCheats").gameObject.SetActive (false);
+			_pnlCanvas.transform.Find ("toggleCheats").gameObject.SetActive (false);
 		}
-		pnlCheats.SetActive (false);
+		_pnlCheats.SetActive (false);
 	}
 
 	void Update () {
 		
 		if (PlayerPrefs.HasKey ("developerMode")) {
-			if (PlayerPrefs.GetInt ("developerMode") == 1) { developerModeActive = true; }
-			else { developerModeActive = false; }
+			if (PlayerPrefs.GetInt ("developerMode") == 1) { _developerModeActive = true; }
+			else { _developerModeActive = false; }
 		}
 
-		if (developerModeActive) {
+		if (_developerModeActive) {
 			this.gameObject.transform.GetChild (0).gameObject.SetActive (true);
 		} else {
 			this.gameObject.transform.GetChild (0).gameObject.SetActive (false);
@@ -54,9 +54,9 @@ public class developerMode : MonoBehaviour {
 
 	void btnToggleCheatsHandler() {
 		/* Handler for btnToggleCheats */
-		if (cheatsAllowed) {
-			cheatMenuOpen = !cheatMenuOpen;
-			pnlCheats.SetActive (cheatMenuOpen);
+		if (CheatsAllowed) {
+			_cheatMenuOpen = !_cheatMenuOpen;
+			_pnlCheats.SetActive (_cheatMenuOpen);
 		}
 	}
 		
@@ -68,8 +68,8 @@ public class developerMode : MonoBehaviour {
 		Application.logMessageReceived -= HandleLog;
 	}
 	public void HandleLog(string logString, string stackTrace, LogType type) {
-		string backLog = lblConsoleLog.text;
-		lblConsoleLog.text = logString + "\n" + backLog;
+		string backLog = _lblConsoleLog.text;
+		_lblConsoleLog.text = logString + "\n" + backLog;
 	}
 	#endregion
 

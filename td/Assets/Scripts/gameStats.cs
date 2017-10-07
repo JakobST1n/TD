@@ -3,53 +3,53 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class gameStats : MonoBehaviour {
+public class GameStats : MonoBehaviour {
 
-	public player Player;
-    GameObject canvas;
-    Text txtMoney;
-    Text txtScore;
-	Text txtHp;
-    int displayedScore;
-    int displayedMoney;
-	int displayedHealth;
+	public Player Player;
+    GameObject _canvas;
+    Text _txtMoney;
+    Text _txtScore;
+	Text _txtHp;
+    int _displayedScore;
+    int _displayedMoney;
+	int _displayedHealth;
 
     void Start() {
-		canvas = transform.GetChild (0).gameObject;
-		txtMoney = canvas.transform.Find ("playerMoney").gameObject.GetComponent <Text>();
-		txtScore = canvas.transform.Find ("playerScore").gameObject.GetComponent <Text>();
-		txtHp = canvas.transform.Find ("playerHealth").gameObject.GetComponent <Text>();
+		_canvas = transform.GetChild (0).gameObject;
+		_txtMoney = _canvas.transform.Find ("playerMoney").gameObject.GetComponent <Text>();
+		_txtScore = _canvas.transform.Find ("playerScore").gameObject.GetComponent <Text>();
+		_txtHp = _canvas.transform.Find ("playerHealth").gameObject.GetComponent <Text>();
     }
 
 	void Update () {
 
-		if (Player.money () != displayedMoney) {
-			displayedMoney = Player.money ();
-			updateMoney (displayedMoney);
+		if (Player.Money () != _displayedMoney) {
+			_displayedMoney = Player.Money ();
+			UpdateMoney (_displayedMoney);
 		}
 
-		if (Player.score () != displayedScore) {
-			displayedScore = Player.score ();
-			updateScore (displayedScore);
+		if (Player.Score () != _displayedScore) {
+			_displayedScore = Player.Score ();
+			UpdateScore (_displayedScore);
 		}
 
-		if (Player.health () != displayedHealth) {
-			displayedHealth = Player.health ();
-			updateHealth (displayedHealth);
+		if (Player.Health () != _displayedHealth) {
+			_displayedHealth = Player.Health ();
+			UpdateHealth (_displayedHealth);
 		}
 
 	}
 
-	void updateScore(int newScore) {
-		txtScore.text = ("Score: " + newScore.ToString ());
+	void UpdateScore(int newScore) {
+		_txtScore.text = ("Score: " + newScore.ToString ());
 	}
 
-	void updateMoney(int newMoney) {
-		txtMoney.text = ("Money: " + newMoney.ToString () + "$");
+	void UpdateMoney(int newMoney) {
+		_txtMoney.text = ("Money: " + newMoney.ToString () + "$");
 	}
 
-	void updateHealth(int newHp) {
-		txtHp.text = ("HP: " + newHp.ToString ());
+	void UpdateHealth(int newHp) {
+		_txtHp.text = ("HP: " + newHp.ToString ());
 	}
 
 }

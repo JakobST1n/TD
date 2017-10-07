@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class cameraHandler : MonoBehaviour {
+public class CameraHandler : MonoBehaviour {
 	// TODO Fiks panning, ser idiotisk ut nå så jeg har satt panSpeed til 0. (I editoren)
 
 	public float PanSpeed = 20f;
@@ -14,17 +12,17 @@ public class cameraHandler : MonoBehaviour {
 	public static readonly float[] BoundsZ = new float[]{-8f, 8f};
 	public static readonly float[] ZoomBounds = new float[]{1f, 5f};
 
-	private Camera cam;
+	private Camera _cam;
 
-	private bool panActive;
-	private Vector3 lastPanPosition;
-	private int panFingerId; // Touch mode only
+	private bool _panActive;
+	private Vector3 _lastPanPosition;
+	private int _panFingerId; // Touch mode only
 
-	private bool zoomActive;
-	private Vector2[] lastZoomPositions; // Touch mode only
+	private bool _zoomActive;
+	private Vector2[] _lastZoomPositions; // Touch mode only
 
 	void Awake() {
-		cam = GetComponent<Camera>();
+		_cam = GetComponent<Camera>();
 	}
 
 	void Update() {
@@ -46,43 +44,43 @@ public class cameraHandler : MonoBehaviour {
 		switch(Input.touchCount) {
 
 		case 1: // Panning
-			zoomActive = false;
+			_zoomActive = false;
 
 			// If the touch began, capture its position and its finger ID.
 			// Otherwise, if the finger ID of the touch doesn't match, skip it.
 			Touch touch = Input.GetTouch(0);
 			if (touch.phase == TouchPhase.Began) {
-				lastPanPosition = touch.position;
-				panFingerId = touch.fingerId;
-				panActive = true;
-			} else if (touch.fingerId == panFingerId && touch.phase == TouchPhase.Moved) {
+				_lastPanPosition = touch.position;
+				_panFingerId = touch.fingerId;
+				_panActive = true;
+			} else if (touch.fingerId == _panFingerId && touch.phase == TouchPhase.Moved) {
 				PanCamera(touch.position);
 			}
 			break;
 
 		case 2: // Zooming
-			panActive = false;
+			_panActive = false;
 
 			Vector2[] newPositions = new Vector2[]{Input.GetTouch(0).position, Input.GetTouch(1).position};
-			if (!zoomActive) {
-				lastZoomPositions = newPositions;
-				zoomActive = true;
+			if (!_zoomActive) {
+				_lastZoomPositions = newPositions;
+				_zoomActive = true;
 			} else {
 				// Zoom based on the distance between the new positions compared to the 
 				// distance between the previous positions.
 				float newDistance = Vector2.Distance(newPositions[0], newPositions[1]);
-				float oldDistance = Vector2.Distance(lastZoomPositions[0], lastZoomPositions[1]);
+				float oldDistance = Vector2.Distance(_lastZoomPositions[0], _lastZoomPositions[1]);
 				float offset = newDistance - oldDistance;
 
 				ZoomCamera(offset, ZoomSpeedTouch);
 
-				lastZoomPositions = newPositions;
+				_lastZoomPositions = newPositions;
 			}
 			break;
 
 		default:
-			panActive = false;
-			zoomActive = false;
+			_panActive = false;
+			_zoomActive = false;
 			break;
 		}
 	}
@@ -92,41 +90,41 @@ public class cameraHandler : MonoBehaviour {
 		// On mouse up, disable panning.
 		// If there is no mouse being pressed, do nothing.
 		if (Input.GetMouseButtonDown(0)) {
-			panActive = true;
-			lastPanPosition = Input.mousePosition;
+			_panActive = true;
+			_lastPanPosition = Input.mousePosition;
 		} else if (Input.GetMouseButtonUp(0)) {
-			panActive = false;
+			_panActive = false;
 		} else if (Input.GetMouseButton(0)) {
 			PanCamera(Input.mousePosition);
 		}
 
 		// Check for scrolling to zoom the camera
 		float scroll = Input.GetAxis("Mouse ScrollWheel");
-		zoomActive = true;
+		_zoomActive = true;
 		ZoomCamera(scroll, ZoomSpeedMouse);
-		zoomActive = false;
+		_zoomActive = false;
 	}
 
 	void ZoomCamera(float offset, float speed) {
-		if (!zoomActive || offset == 0) {
+		if (!_zoomActive || offset == 0) {
 			return;
 		}
 
-		cam.orthographicSize = Mathf.Clamp(cam.orthographicSize - (offset * speed), ZoomBounds[0], ZoomBounds[1]);
+		_cam.orthographicSize = Mathf.Clamp(_cam.orthographicSize - (offset * speed), ZoomBounds[0], ZoomBounds[1]);
 	}
 
 	void PanCamera(Vector3 newPanPosition) {
-		if (!panActive) {
+		if (!_panActive) {
 			return;
 		}
 
 		// Translate the camera position based on the new input position
-		Vector3 offset = cam.ScreenToViewportPoint(lastPanPosition - newPanPosition);
+		Vector3 offset = _cam.ScreenToViewportPoint(_lastPanPosition - newPanPosition);
 		Vector3 move = new Vector3(offset.x * PanSpeed, offset.y * PanSpeed, 0f);
 		transform.Translate(move, Space.World);  
 		ClampToBounds();
 
-		lastPanPosition = newPanPosition;
+		_lastPanPosition = newPanPosition;
 	}
 
 	void ClampToBounds() {

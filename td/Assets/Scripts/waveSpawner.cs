@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class waveSpawner : MonoBehaviour {
+public class WaveSpawner : MonoBehaviour {
 
 	public static int EnemiesAlive = 0;
 
-	public Wave[] waves;
+	public Wave[] Waves;
 
-	public Transform spawnPoint;
+	public Transform SpawnPoint;
 
-	public float timeBetweenWaves = 5f;
-	private float countdown = 2f;
+	public float TimeBetweenWaves = 5f;
+	private float _countdown = 2f;
 
-	public Text waveCountdownText;
+	public Text WaveCountdownText;
 
 
-	private int waveIndex = 0;
+	private int _waveIndex = 0;
 
 	void Update ()
 	{
@@ -26,51 +26,51 @@ public class waveSpawner : MonoBehaviour {
 			return;
 		}
 
-		if (waveIndex == waves.Length)
+		if (_waveIndex == Waves.Length)
 		{
 			// WIN LEVEL!!!
 			this.enabled = false;
 		}
 
-		if (countdown <= 0f)
+		if (_countdown <= 0f)
 		{
 			StartCoroutine(SpawnWave());
-			countdown = timeBetweenWaves;
+			_countdown = TimeBetweenWaves;
 			return;
 		}
 
-		countdown -= Time.deltaTime;
+		_countdown -= Time.deltaTime;
 
-		countdown = Mathf.Clamp(countdown, 0f, Mathf.Infinity);
+		_countdown = Mathf.Clamp(_countdown, 0f, Mathf.Infinity);
 
 		//waveCountdownText.text = string.Format("{0:00.00}", countdown);
 	}
 
 	IEnumerator SpawnWave ()
 	{
-		Wave wave = waves[waveIndex];
+		Wave wave = Waves[_waveIndex];
 
-		EnemiesAlive = wave.count;
+		EnemiesAlive = wave.Count;
 
-		for (int i = 0; i < wave.count; i++)
+		for (int i = 0; i < wave.Count; i++)
 		{
-			SpawnEnemy(wave.enemy);
-			yield return new WaitForSeconds(1f / wave.rate);
+			SpawnEnemy(wave.Enemy);
+			yield return new WaitForSeconds(1f / wave.Rate);
 		}
 
-		waveIndex++;
+		_waveIndex++;
 	}
 
 	void SpawnEnemy (GameObject enemy)
 	{
-		Instantiate(enemy, spawnPoint.position, spawnPoint.rotation);
+		Instantiate(enemy, SpawnPoint.position, SpawnPoint.rotation);
 	}
 
 }
 
 [System.Serializable]
 public class Wave {
-	public GameObject enemy;
-	public int count;
-	public float rate;
+	public GameObject Enemy;
+	public int Count;
+	public float Rate;
 }

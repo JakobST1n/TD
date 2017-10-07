@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
@@ -7,28 +6,28 @@ public class Enemy : MonoBehaviour {
 	 * Currently it follows the pathway, and dies when reacing the end */
 
 	[Header("Attributes")]
-	public float speed;  // Speed multiplier
-	public int initialHp;  // HealthPoints
-	public int damage;
-	public List<Vector3> waypoints;  // Pathway waypoints, should be set by the spawner
+	public float Speed;  // Speed multiplier
+	public int InitialHp;  // HealthPoints
+	public int Damage;
+	public List<Vector3> Waypoints;  // Pathway waypoints, should be set by the spawner
 	[Header("Scripting vars")]
-	public player player;            // Reference to the player object, should be set when instantiating
+	public Player Player;            // Reference to the player object, should be set when instantiating
 
-	Vector3 waypointPos;  // Current waypoint position
-	int waypointNum = -1;  // Using minus one so that first addition returns 0, first element in array
+	private Vector3 _waypointPos;  // Current waypoint position
+	private int _waypointNum = -1;  // Using minus one so that first addition returns 0, first element in array
 
 	void Update () {
-		if ( (transform.position == waypointPos && waypointNum + 1 < waypoints.Count) || waypointNum == -1) {
-			waypointNum++;
-			waypointPos = new Vector3 (waypoints [waypointNum].x, 0.483f, waypoints [waypointNum].z);
+		if ( (transform.position == _waypointPos && _waypointNum + 1 < Waypoints.Count) || _waypointNum == -1) {
+			_waypointNum++;
+			_waypointPos = new Vector3 (Waypoints [_waypointNum].x, 0.483f, Waypoints [_waypointNum].z);
 		}
 
-		float transformStep = speed * Time.deltaTime;
-		transform.position = Vector3.MoveTowards (transform.position, waypointPos, transformStep);
+		float transformStep = Speed * Time.deltaTime;
+		transform.position = Vector3.MoveTowards (transform.position, _waypointPos, transformStep);
 
 		// Selfdestruct if object reached the end
-		if (waypointNum + 1 >= waypoints.Count) {
-			player.decreaseHealth (damage);
+		if (_waypointNum + 1 >= Waypoints.Count) {
+			Player.DecreaseHealth (Damage);
 			Destroy (gameObject);
 			return;
 		}

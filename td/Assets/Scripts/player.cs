@@ -2,55 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player : MonoBehaviour {
+public class Player : MonoBehaviour {
 
-	public int initialHealth;
-    public int startingMoney;
+	public int InitialHealth;
+    public int StartingMoney;
 
-	private GameObject[] towers;
-    private int playerMoney;
-    private int playerScore;
-	private int playerHealth;
+	private GameObject[] _towers;
+    private int _playerMoney;
+    private int _playerScore;
+	private int _playerHealth;
 
     void Awake() {
-        playerMoney = startingMoney;
-		playerHealth = initialHealth;
+	    /* This method initializes the player class */
+        _playerMoney = StartingMoney;
+		_playerHealth = InitialHealth;
     }
 
 	#region stats
-    public int score() {
-        return playerScore;
+    public int Score() {
+        return _playerScore;
     }
 
-    public void scoreAdd(int points) {
-        playerScore += points;
+    public void ScoreAdd(int points) {
+        _playerScore += points;
     }
 
-    public int money() {
-        return playerMoney;
+    public int Money() {
+        return _playerMoney;
     }
 
-    public void moneyAdd(int sum) {
-        playerMoney += sum;
+    public void MoneyAdd(int sum) {
+        _playerMoney += sum;
     }
 
-    public void moneySubtract(int sum) {
-        playerMoney -= sum;
+    public void MoneySubtract(int sum) {
+        _playerMoney -= sum;
     }
 
-	public int health() {
-		return playerHealth;
+	public int Health() {
+		return _playerHealth;
 	}
 
-	public void decreaseHealth(int hp) {
-		playerHealth -= hp;
+	public void DecreaseHealth(int hp) {
+		_playerHealth -= hp;
 	}
 	#endregion
 
-	public void spawnTower(GameObject towerType) {
+	public void SpawnTower(GameObject towerType) {
 		GameObject tower = Instantiate (towerType, new Vector3 (0, 0, 0), Quaternion.identity, transform.Find ("towers").transform);
-		tower script = tower.GetComponent <tower>();
-		script.player = this;
+		Tower script = tower.GetComponent <Tower>();
+		script.Player = this;
 	}
 
 }
