@@ -6,7 +6,8 @@ public class Player : MonoBehaviour {
 
 	public int InitialHealth;
     public int StartingMoney;
-
+	public MainGui MainGui;
+	
 	private GameObject[] _towers;
     private int _playerMoney;
     private int _playerScore;
@@ -16,6 +17,7 @@ public class Player : MonoBehaviour {
 	    /* This method initializes the player class */
         _playerMoney = StartingMoney;
 		_playerHealth = InitialHealth;
+	    InvokeRepeating ("GameStateWatcher", 0f, 0.5f);
     }
 
 	#region stats
@@ -43,9 +45,9 @@ public class Player : MonoBehaviour {
 		return _playerHealth;
 	}
 
-	public float HealthAsPercentage()
+	public int HealthAsPercentage()
 	{
-		return InitialHealth / _playerHealth;
+		return Mathf.RoundToInt((InitialHealth * _playerHealth) / 100.0f);  // Basic percentage calc...
 	}
 
 	public void DecreaseHealth(int hp) {
@@ -57,6 +59,12 @@ public class Player : MonoBehaviour {
 		GameObject tower = Instantiate (towerType, new Vector3 (0, 0, 0), Quaternion.identity, transform.Find ("towers").transform);
 		Tower script = tower.GetComponent <Tower>();
 		script.Player = this;
+	}
+
+	public void GameStateWatcher() {
+		if (_playerHealth <= 0) {
+			MainGui.GameOverScreen(_playerScore);
+		}
 	}
 
 }

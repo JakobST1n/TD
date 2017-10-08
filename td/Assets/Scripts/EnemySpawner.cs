@@ -9,13 +9,13 @@ public class EnemySpawner : MonoBehaviour {
 	public Enemy EnemyPrefab;
 	public Transform PathWay;
 	[Header("Scripting vars")]
-	public Player Player;            // Reference to the player object, should be set when instantiating
+	public Player Player;            // Reference to the player object, should be set in designer
 
 	private Transform _parentObject;
 
-	List<Vector3> _waypoints = new List<Vector3>();
-	int _next = 1;
-	int _n = 0;
+	private List<Vector3> _waypoints = new List<Vector3>();
+	private int _next = 1;
+	private int _n = 0;
 
 	void Awake() {
 		foreach (Transform child in PathWay) {
