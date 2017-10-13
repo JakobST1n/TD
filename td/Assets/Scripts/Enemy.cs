@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour {
 	private int _waypointNum = -1;  // Using minus one so that first addition returns 0, first element in array
 
 	void Update () {
+		if (Player.GameIsPaused()) { return; }  // This ensures that the game stays paused
+		
 		if ( (transform.position == _waypointPos && _waypointNum + 1 < Waypoints.Count) || _waypointNum == -1) {
 			_waypointNum++;
 			_waypointPos = new Vector3 (Waypoints [_waypointNum].x, 0.483f, Waypoints [_waypointNum].z);

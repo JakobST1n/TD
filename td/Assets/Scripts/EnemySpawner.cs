@@ -28,6 +28,7 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	void Update () {
+		if (Player.GameIsPaused()) { return; }  // This ensures that the game stays paused
 		_n++;
 
 		if (_n == _next) {

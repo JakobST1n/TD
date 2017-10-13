@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
 
 	public int InitialHealth;
     public int StartingMoney;
 	public MainGui MainGui;
-	
+
+	private int _gameState;
 	private GameObject[] _towers;
     private int _playerMoney;
     private int _playerScore;
@@ -18,6 +17,7 @@ public class Player : MonoBehaviour {
         _playerMoney = StartingMoney;
 		_playerHealth = InitialHealth;
 	    InvokeRepeating ("GameStateWatcher", 0f, 0.5f);
+	    _gameState = 1;
     }
 
 	#region stats
@@ -65,6 +65,21 @@ public class Player : MonoBehaviour {
 		if (_playerHealth <= 0) {
 			MainGui.GameOverScreen(_playerScore);
 		}
+	}
+
+	public bool GameIsPaused() {
+		if (_gameState == 0) { return true; }
+		return false;
+	}
+
+	public void PauseGame() {
+		Time.timeScale = 0.0F;
+		_gameState = 0;
+	}
+
+	public void ResumeGame() {
+		Time.timeScale = 1.0F;
+		_gameState = 1;
 	}
 
 }

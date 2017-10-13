@@ -1,8 +1,12 @@
 ﻿using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class MainGui : MonoBehaviour {
+	[Header("Scripting vars")]
+	public Player Player;            // Reference to the player object, should be set in designer
+	
 	private GameObject _pnlMenu;
 	private GameObject _pnlSidebar;
 	private GameObject _pnlSettings;
@@ -42,8 +46,8 @@ public class MainGui : MonoBehaviour {
 		_btnSettings = _pnlMenu.transform.Find ("settings").gameObject.GetComponent <Button> ();
 		_btnSettingsDiscard = _pnlSettings.transform.Find ("discardChanges").gameObject.GetComponent <Button> ();
 		_btnSettingsSave = _pnlSettings.transform.Find ("saveChanges").gameObject.GetComponent <Button> ();
-		_btnGoMenu = _pnlGameOver.transform.Find ("menu").gameObject.GetComponent <Button> ();
-		_btnGoRetry = _pnlGameOver.transform.Find ("restart").gameObject.GetComponent <Button> ();
+		_btnGoMenu = _pnlGameOver.transform.Find ("GameOver").transform.Find("menu").gameObject.GetComponent <Button> ();
+		_btnGoRetry = _pnlGameOver.transform.Find ("GameOver").transform.Find("restart").gameObject.GetComponent <Button> ();
 		if (_btnToggleSidebar != null) { _btnToggleSidebar.onClick.AddListener (toggleSidebarHandler); }
 		if (_btnPauseGame != null) { _btnPauseGame.onClick.AddListener (pauseGameHandler); }
 		if (_btnResumeGame != null) { _btnResumeGame.onClick.AddListener (btnResumeGameHandler); }
@@ -55,9 +59,9 @@ public class MainGui : MonoBehaviour {
 		if (_btnGoRetry != null) { _btnGoRetry.onClick.AddListener (btnGoRetryHandler); }
 		
 		/* Text */
-		_txtGoScore = _pnlGameOver.transform.Find("score").gameObject.GetComponent<Text>();
-		_txtGoHighScore = _pnlGameOver.transform.Find("highScore").gameObject.GetComponent<Text>();
-		_txtGoNewHighScore = _pnlGameOver.transform.Find("newHighscore").gameObject.GetComponent<Text>();
+		_txtGoScore = _pnlGameOver.transform.Find ("GameOver").transform.Find("score").gameObject.GetComponent<Text>();
+		_txtGoHighScore = _pnlGameOver.transform.Find ("GameOver").transform.Find("highScore").gameObject.GetComponent<Text>();
+		_txtGoNewHighScore = _pnlGameOver.transform.Find ("GameOver").transform.Find("newHighscore").gameObject.GetComponent<Text>();
 
 		/* Set up initial states */
 		UpdateSidebarPosandBtn ();
@@ -79,6 +83,7 @@ public class MainGui : MonoBehaviour {
 		Time.timeScale = 0.0F;
 		_btnToggleSidebar.interactable = false;
 		_btnPauseGame.interactable = false;
+		Player.PauseGame();
 	}
 
 	private void btnResumeGameHandler() {
@@ -88,6 +93,7 @@ public class MainGui : MonoBehaviour {
 		Time.timeScale = 1.0F;
 		_btnToggleSidebar.interactable = true;
 		_btnPauseGame.interactable = true;
+		Player.ResumeGame();
 	}
 
 	private void btnExitGameHandler() {
@@ -136,6 +142,8 @@ public class MainGui : MonoBehaviour {
 
 	private void btnGoRetryHandler() {
 		/* Handler for btnGoRetry */
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		Time.timeScale = 1.0F;
 	}
 
 	private bool IntToBool(int input) {
@@ -162,7 +170,7 @@ public class MainGui : MonoBehaviour {
 		if (_sidebarExpanded) { toggleSidebarHandler(); }
 		
 		/* Pause game */
-		Time.timeScale = 0.0F;
+		Player.PauseGame();
 		/* Activate panel */
 		_pnlGameOver.SetActive(true);
 		/* Set text, score */

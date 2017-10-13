@@ -11,6 +11,8 @@ public class CameraHandler : MonoBehaviour {
 	public static readonly float[] BoundsY = new float[]{-5f, 10f};
 	public static readonly float[] BoundsZ = new float[]{-8f, 8f};
 	public static readonly float[] ZoomBounds = new float[]{1f, 5f};
+	[Header("Scripting vars")]
+	public Player Player;            // Reference to the player object, should be set in designer
 
 	private Camera _cam;
 
@@ -26,6 +28,7 @@ public class CameraHandler : MonoBehaviour {
 	}
 
 	void Update() {
+		if (Player.GameIsPaused()) { return; }
 		// If there's an open menu, or the clicker is being pressed, ignore the touch.
 		/*
 		if (GameManager.Instance.MenuManager.HasOpenMenu || GameManager.Instance.BitSpawnManager.IsSpawningBits) {
