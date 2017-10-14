@@ -89,7 +89,6 @@ public class Tower : MonoBehaviour {
 
 		_fireCountdown -= Time.deltaTime;
 
-
 	}
 
 	void Shoot() {

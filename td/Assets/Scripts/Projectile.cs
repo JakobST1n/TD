@@ -34,6 +34,7 @@ public class Projectile : MonoBehaviour {
 	}
 
 	void HitTarget() {
+		WaveSpawner.EnemiesAlive--;
 		Player.ScoreAdd (PointsPerHit);
 		Destroy (_target.gameObject);
 		Destroy (gameObject);

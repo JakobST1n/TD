@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour {
 	public int InitialHp;  // HealthPoints
 	public int Damage;
 	public List<Vector3> Waypoints;  // Pathway waypoints, should be set by the spawner
+	
 	[Header("Scripting vars")]
 	public Player Player;            // Reference to the player object, should be set when instantiating
 
@@ -29,6 +30,7 @@ public class Enemy : MonoBehaviour {
 
 		// Selfdestruct if object reached the end
 		if (_waypointNum + 1 >= Waypoints.Count) {
+			WaveSpawner.EnemiesAlive--;
 			Player.DecreaseHealth (Damage);
 			Destroy (gameObject);
 			return;
