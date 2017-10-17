@@ -6,6 +6,8 @@ public class Player : MonoBehaviour {
     public int StartingMoney;
 	public MainGui MainGui;
 
+	public GameObject TxtNoMoney; // HACK Move this into MainGui, and make a callable function or something! This is just bodging.
+
 	private int _gameState;
 	private GameObject[] _towers;
     private int _playerMoney;
@@ -74,9 +76,16 @@ public class Player : MonoBehaviour {
 	#endregion
 
 	public void SpawnTower(GameObject towerType) {
-		GameObject tower = Instantiate (towerType, new Vector3 (0, 0, 0), Quaternion.identity, transform.Find ("towers").transform);
-		Tower script = tower.GetComponent <Tower>();
-		script.Player = this;
+		float thisTowerPrice = towerType.gameObject.GetComponent<Tower>().TowerPrice;
+		if (_playerMoney >= thisTowerPrice) {
+			GameObject tower = Instantiate(towerType, new Vector3(0, 0, 0), Quaternion.identity,
+				transform.Find("towers").transform);
+			Tower script = tower.GetComponent<Tower>();
+			script.Player = this;
+		}
+		else {
+			TxtNoMoney.SetActive(true);
+		}
 	}
 
 	public void GameStateWatcher() {

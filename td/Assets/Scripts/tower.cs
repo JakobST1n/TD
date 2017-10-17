@@ -8,6 +8,7 @@ public class Tower : MonoBehaviour {
 	public float TurnSpeed;          // How fast the turret should rotate. Set in designer (tower prefab)
 	[Range(0, 10)]
 	public float TowerRange;         // How large the range of the tower is. this is the diameter. Set in designer (tower prefab)
+	public float TowerRangeMultiplier; 
 	public GameObject ProjectilePrefab;
 	public Transform FirePoint;
 	[Header("Materials")]
@@ -29,7 +30,7 @@ public class Tower : MonoBehaviour {
 	void Start () {
 		_placementIndicator = transform.GetChild (0).gameObject;
 		_placementIndicatorRenderer = _placementIndicator.GetComponent<Renderer> ();
-		_placementIndicator.transform.localScale = new Vector3 (TowerRange*7, 0.00000001f, TowerRange*7); 
+		_placementIndicator.transform.localScale = new Vector3 (TowerRange*7*TowerRangeMultiplier, 0.00000001f, TowerRange*7*TowerRangeMultiplier); 
 
 		_groundPlane = new Plane (Vector3.up, new Vector3(0f, _groundYpoint, 0f));
 	}
