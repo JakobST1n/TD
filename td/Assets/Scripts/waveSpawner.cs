@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class WaveSpawner : MonoBehaviour {
 	
 	[Header("Attributes")]
@@ -27,6 +28,7 @@ public class WaveSpawner : MonoBehaviour {
 	public static int EnemiesAlive = 0;
 	private float _countdown = 2f;
 	private int _waveIndex = 0;
+	private bool _lastWavePayed;
 
 	void Awake() {
 		foreach (Transform child in PathWay) {
@@ -43,8 +45,13 @@ public class WaveSpawner : MonoBehaviour {
 			return;
 		}
 
+		if (EnemiesAlive == 0 && !_lastWavePayed) {
+			Player.Payday();
+			_lastWavePayed = true;
+		}
+
 		if (_countdown <= 0f) {
-			StartCoroutine(SpawnWave());
+			StartCoroutine(SpawnWave());  // TODO Bytt ut denne med SpawnWaveRand (Gjør ferdig SpawnWaveRand)
 			_countdown = TimeBetweenWaves;
 			return;
 		}
@@ -95,6 +102,29 @@ public class WaveSpawner : MonoBehaviour {
 			yield return new WaitForSeconds(1f / 100f);
 		}
 
+		SpawnRate = SpawnRate * 2;
+		_waveIndex++;
+		_lastWavePayed = false;
+	}
+
+	IEnumerator SpawnWaveRand() {
+		int enemiesToSpawn = WaveEnemyCount(_waveIndex);
+		int[] waveEnemies = new int[Enemies.Length - 1];
+		EnemiesAlive = enemiesToSpawn;
+
+		for (int i = 1; i < enemiesToSpawn; i++) {
+			int currentEnemyInt = UnityEngine.Random.Range(0, Enemies.Length - 1);
+			EnemyType currentEnemy = Enemies[currentEnemyInt];
+			
+			if (_waveIndex <= 1) {
+			} else if (_waveIndex <= 5) {
+				
+			}
+			
+			
+			yield return new WaitForSeconds(1f / SpawnRate);
+		}
+		
 		SpawnRate = SpawnRate * 2;
 		_waveIndex++;
 	}

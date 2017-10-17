@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 	private int _gameState;
 	private GameObject[] _towers;
     private int _playerMoney;
+	private int _playerPaycheck;
     private int _playerScore;
 	private int _playerHealth;
 
@@ -40,6 +41,19 @@ public class Player : MonoBehaviour {
     public void MoneySubtract(int sum) {
         _playerMoney -= sum;
     }
+
+	public int Paycheck() {
+		return _playerPaycheck;
+	}
+
+	public void PaycheckAdd(int sum) {
+		_playerPaycheck += sum;
+	}
+
+	public void Payday() {
+		_playerMoney += _playerPaycheck;
+		_playerPaycheck = 0;
+	}
 
 	public int Health() {
 		return _playerHealth;

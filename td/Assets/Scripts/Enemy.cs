@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
 	 * Currently it follows the pathway, and dies when reacing the end */
 
 	[Header("Attributes")]
+	public int HeadPrice;
 	public float Speed;  // Speed multiplier
 	public int InitialHp;  // HealthPoints
 	public int Damage;

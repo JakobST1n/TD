@@ -36,6 +36,7 @@ public class Projectile : MonoBehaviour {
 	void HitTarget() {
 		WaveSpawner.EnemiesAlive--;
 		Player.ScoreAdd (PointsPerHit);
+		Player.PaycheckAdd(_target.GetComponent<Enemy>().HeadPrice);
 		Destroy (_target.gameObject);
 		Destroy (gameObject);
 	}
