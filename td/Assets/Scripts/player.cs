@@ -67,6 +67,10 @@ public class Player : MonoBehaviour {
 	public void DecreaseHealth(int hp) {
 		_playerHealth -= hp;
 	}
+
+	public void IncreaseHealth(int hp) {
+		_playerHealth += hp;
+	}
 	#endregion
 
 	public void SpawnTower(GameObject towerType) {
