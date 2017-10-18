@@ -41,7 +41,7 @@ public class WaveSpawner : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (EnemiesAlive > 0) {
+		if (GameObject.FindGameObjectsWithTag("enemy").Length > 0) {
 			return;
 		}
 
@@ -51,6 +51,7 @@ public class WaveSpawner : MonoBehaviour {
 		}
 
 		if (_countdown <= 0f) {
+			Debug.Log("Spawning new Wave");
 			StartCoroutine(SpawnWave());  // TODO Bytt ut denne med SpawnWaveRand (Gjør ferdig SpawnWaveRand)
 			_countdown = TimeBetweenWaves;
 			return;
