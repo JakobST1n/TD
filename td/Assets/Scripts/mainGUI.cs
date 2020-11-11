@@ -6,7 +6,8 @@ using UnityEngine;
 public class MainGui : MonoBehaviour {
 	[Header("Scripting vars")]
 	public Player Player;            // Reference to the player object, should be set in designer
-	
+
+
 	private GameObject _pnlMenu;
 	private GameObject _pnlSidebar;
 	private GameObject _pnlSettings;
@@ -25,7 +26,7 @@ public class MainGui : MonoBehaviour {
 	private Text _txtGoHighScore;
 	private Text _txtGoNewHighScore;
 
-	private bool _sidebarExpanded;
+	public bool _sidebarExpanded;
 	private readonly float[] _sidebarStates = new float[2] {0f, -202.4f};  // The x position of the sidebar expanded or collapsed
 
 	private bool _menuActive;

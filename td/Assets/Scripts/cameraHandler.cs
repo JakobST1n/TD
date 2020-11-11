@@ -29,13 +29,13 @@ public class CameraHandler : MonoBehaviour {
 
 	void Update() {
 		if (Player.GameIsPaused()) { return; }
-		// If there's an open menu, or the clicker is being pressed, ignore the touch.
-		/*
-		if (GameManager.Instance.MenuManager.HasOpenMenu || GameManager.Instance.BitSpawnManager.IsSpawningBits) {
+        // If there's an open menu, or the clicker is being pressed, ignore the touch.
+        if (Player.MainGui._sidebarExpanded) { return;  }
+		/*if (GameManager.Instance.MenuManager.HasOpenMenu || GameManager.Instance.BitSpawnManager.IsSpawningBits) {
 			return;
 		}*/
 
-		if (Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer) {
+        if (Input.touchSupported && Application.platform != RuntimePlatform.WebGLPlayer) {
 			HandleTouch();
 		} else {
 			HandleMouse();

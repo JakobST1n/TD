@@ -1,0 +1,32 @@
+﻿<Properties StartupConfiguration="{F1299BB0-7DC7-F629-B5B1-C07306222257}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/MainGui.cs">
+    <Files>
+      <File FileName="Assets/Scripts/cameraHandler.cs" Line="33" Column="28" />
+      <File FileName="Assets/Scripts/Player.cs" Line="17" Column="1" />
+      <File FileName="Assets/Scripts/WaveSpawner.cs" Line="62" Column="34" />
+      <File FileName="Assets/Scripts/Tower.cs" Line="40" Column="10" />
+      <File FileName="Assets/Scripts/MainGui.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="td" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="MainGui.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.td PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="cbaf89f2-ad84-4304-ab59-9acc32d0194f" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
